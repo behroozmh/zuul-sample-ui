@@ -14,18 +14,6 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @PropertySource(value = "classpath:application.yml")
 public class Dashboard {
-    @Value("${clientId}")
-    private String CLIENT_ID;
-    @Value("${clientSecret}")
-    private String CLIENT_SECRET;
-    @Value("${scope}")
-    private String SCOPE;
-    @Value("${accessTokenUri}")
-    private String TOKEN_URL;
-    @Value("${username}")
-    private String USERNAME;
-    @Value("${password}")
-    private String PASSWORD;
     @Value("${zuul.routes.myLogOut.url}")
     private String MY_AUTH_LOGOUT_URL;
     @Value("${zuul.routes.logout.url}")
