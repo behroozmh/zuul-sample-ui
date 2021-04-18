@@ -18,14 +18,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.headers().cacheControl().disable()
-                .frameOptions().disable()
                 .and()
                 .authorizeRequests()
                 .antMatchers(new String[]{"/runtime-**", "/polyfills-**", "/main-**", "/scripts.**", "/styles.**"})
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-
                 .and()
                 .logout().addLogoutHandler(logoutHandler);
     }
