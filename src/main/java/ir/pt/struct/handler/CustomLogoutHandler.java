@@ -44,7 +44,6 @@ public class CustomLogoutHandler implements LogoutHandler {
                     responseEntity.getStatusCode() == HttpStatus.FOUND ||
                     responseEntity.getStatusCode() == HttpStatus.TEMPORARY_REDIRECT) {
                 log.info("####### Success logout {} #### code {}", authentication.getName(), responseEntity.getStatusCode());
-                //
             }
         }
     }
