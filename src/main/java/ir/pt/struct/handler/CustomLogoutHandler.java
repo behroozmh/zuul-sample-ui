@@ -1,7 +1,6 @@
 package ir.pt.struct.handler;
 
 import ir.pt.struct.config.Dashboard;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.MessageFormat;
 
-@Slf4j
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
     @Autowired
@@ -43,7 +42,9 @@ public class CustomLogoutHandler implements LogoutHandler {
             if (responseEntity.getStatusCode() == HttpStatus.OK ||
                     responseEntity.getStatusCode() == HttpStatus.FOUND ||
                     responseEntity.getStatusCode() == HttpStatus.TEMPORARY_REDIRECT) {
-                log.info("####### Success logout {} #### code {}", authentication.getName(), responseEntity.getStatusCode());
+                System.out.println(
+                        MessageFormat.format("####### Success logout {} #### code {}"
+                                , authentication.getName(), responseEntity.getStatusCode()));
             }
         }
     }
