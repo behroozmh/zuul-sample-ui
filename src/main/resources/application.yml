@@ -33,9 +33,6 @@ zuul:
     myLogOut:
       path: /myLogOut/**
       url: http://172.17.192.121:9999/authentication/myLogout
-    logout:
-      path: /logout/**
-      url: http://172.17.192.121:9999/authentication/logout
     authorize:
       path: /authorize/**
       url: http://172.17.192.121:9998/authorization
