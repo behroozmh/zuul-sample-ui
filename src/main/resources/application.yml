@@ -51,3 +51,6 @@ logging:
 server:
   context-path: /ui2
   port: 8081
+  error:
+    whitelabel:
+      enabled: false

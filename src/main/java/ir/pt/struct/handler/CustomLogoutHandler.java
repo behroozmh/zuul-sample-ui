@@ -36,16 +36,8 @@ public class CustomLogoutHandler implements LogoutHandler {
             SecurityContextHolder.clearContext();
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            ResponseEntity responseEntity = restTemplate.postForEntity(dashboard.getMY_AUTH_LOGOUT_URL(),
+            restTemplate.postForEntity(dashboard.getMY_AUTH_LOGOUT_URL(),
                     createHttpEntity(formData, details), null);
-
-            if (responseEntity.getStatusCode() == HttpStatus.OK ||
-                    responseEntity.getStatusCode() == HttpStatus.FOUND ||
-                    responseEntity.getStatusCode() == HttpStatus.TEMPORARY_REDIRECT) {
-                System.out.println(
-                        MessageFormat.format("####### Success logout {} #### code {}"
-                                , authentication.getName(), responseEntity.getStatusCode()));
-            }
         }
     }
 
