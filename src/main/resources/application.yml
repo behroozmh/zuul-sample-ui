@@ -38,10 +38,10 @@ zuul:
       url: http://172.17.192.121:9998/authorization
     audit:
       path: /audit/**
-      url: http://172.17.192.121:9996/auditing
+      url: http://172.17.192.5:8080/auditing
     resource:
       path: /resource/**
-      url: http://172.17.192.121:8090/adminResource
+      url: http://172.17.192.5:8080/adminResource
   host:
     connect-timeout-millis: 90000000
     socket-timeout-millis: 90000000
