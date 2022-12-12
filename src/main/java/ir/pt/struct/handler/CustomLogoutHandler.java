@@ -28,10 +28,9 @@ public class CustomLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        logger.info("################################################################################");
-        logger.info("#################### log out call user={0} and url={1} ####################",authentication.getName(),
-                dashboard.getLOGOUT_URL());
-        logger.info("################################################################################");
+        logger.info("##############################");
+        logger.info("##### log out call user="+authentication.getName()+" and url="+dashboard.getLOGOUT_URL()+" #####",authentication.getName());
+        logger.info("##############################");
 
         if (authentication != null) {
             OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
