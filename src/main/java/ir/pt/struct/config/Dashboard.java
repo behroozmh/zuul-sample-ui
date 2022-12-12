@@ -10,14 +10,15 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @PropertySource(value = "classpath:application.yml")
 public class Dashboard {
-    @Value("${zuul.routes.myLogOut.url}")
-    private String MY_AUTH_LOGOUT_URL;
 
-    public String getMY_AUTH_LOGOUT_URL() {
-        return MY_AUTH_LOGOUT_URL;
+    @Value("${zuul.routes.logout.url}")
+    private String LOGOUT_URL;
+
+    public String getLOGOUT_URL() {
+        return LOGOUT_URL;
     }
 
-    public void setMY_AUTH_LOGOUT_URL(String MY_AUTH_LOGOUT_URL) {
-        this.MY_AUTH_LOGOUT_URL = MY_AUTH_LOGOUT_URL;
+    public void setLOGOUT_URL(String LOGOUT_URL) {
+        this.LOGOUT_URL = LOGOUT_URL;
     }
 }

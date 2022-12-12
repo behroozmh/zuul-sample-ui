@@ -1,11 +1,11 @@
 package ir.pt.struct.handler;
 
 import ir.pt.struct.config.Dashboard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -18,15 +18,21 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.text.MessageFormat;
 
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
+    private  Logger logger= LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private Dashboard dashboard;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        logger.info("################################################################################");
+        logger.info("#################### log out call user={0} and url={1} ####################",authentication.getName(),
+                dashboard.getLOGOUT_URL());
+        logger.info("################################################################################");
+
         if (authentication != null) {
             OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
             HttpSession currentSessionFromRequest = request.getSession(false);
@@ -36,7 +42,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             SecurityContextHolder.clearContext();
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            restTemplate.postForEntity(dashboard.getMY_AUTH_LOGOUT_URL(),
+            restTemplate.postForEntity(dashboard.getLOGOUT_URL(),
                     createHttpEntity(formData, details), null);
         }
     }
