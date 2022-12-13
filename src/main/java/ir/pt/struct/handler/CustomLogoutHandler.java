@@ -1,8 +1,6 @@
 package ir.pt.struct.handler;
 
 import ir.pt.struct.config.Dashboard;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,17 +19,11 @@ import javax.servlet.http.HttpSession;
 
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
-    private  Logger logger= LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private Dashboard dashboard;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-//        logger.info("##############################");
-//        logger.info("##### log out call user="+authentication.getName()+" and url="+dashboard.getLOGOUT_URL()+" #####",authentication.getName());
-//        logger.info("##############################");
-
         if (authentication != null) {
             OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
             HttpSession currentSessionFromRequest = request.getSession(false);
@@ -41,8 +33,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             SecurityContextHolder.clearContext();
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            restTemplate.postForEntity(dashboard.getLOGOUT_URL(),
-                    createHttpEntity(formData, details), null);
+            restTemplate.postForEntity(dashboard.getLOGOUT_URL(), createHttpEntity(formData, details), null);
         }
     }
 
