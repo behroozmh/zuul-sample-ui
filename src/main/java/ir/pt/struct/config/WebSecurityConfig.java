@@ -20,7 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().cacheControl().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers(new String[]{"/runtime-**", "/polyfills-**", "/main-**", "/scripts.**", "/styles.**"})
+                .antMatchers(new String[]{"/runtime-**", "/polyfills-**", "/main-**", "/scripts.**", "/styles.**",
+                        "/login", "/bower_components/**", "/resources/**", "/logout"})
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

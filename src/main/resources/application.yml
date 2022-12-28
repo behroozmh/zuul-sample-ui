@@ -11,8 +11,6 @@ spring:
   jmx:
     default-domain: adminUI02
 security:
-  user:
-    password: 123
   oauth2:
     client:
       accessTokenUri: http://172.17.192.121:9999/authentication/oauth/token
@@ -24,33 +22,29 @@ security:
       id: admin
     resource:
       token-info-uri: http://172.17.192.121:9999/authentication/oauth/check_token
-  sessions: never
 zuul:
   routes:
     user:
       path: /user/**
       url: http://172.17.192.121:9999/authentication/user
-    myLogOut:
-      path: /myLogOut/**
-      url: http://172.17.192.121:9999/authentication/myLogout
     logout:
       path: /logout/**
-      url: http://172.17.192.121:9999/authentication/logout
+      url: http://172.17.192.121:9999/authentication/myLogout
     authorize:
       path: /authorize/**
       url: http://172.17.192.121:9998/authorization
     audit:
       path: /audit/**
-      url: http://172.17.192.121:9996/auditing
+      url: http://172.17.192.5:8080/auditing
     resource:
       path: /resource/**
-      url: http://172.17.192.121:8090/adminResource
+      url: http://172.17.192.5:8080/adminResource
   host:
     connect-timeout-millis: 90000000
     socket-timeout-millis: 90000000
-logging:
-  level:
-    org.springframework.security: DEBUG
 server:
   context-path: /ui2
   port: 8081
+  error:
+    whitelabel:
+      enabled: false

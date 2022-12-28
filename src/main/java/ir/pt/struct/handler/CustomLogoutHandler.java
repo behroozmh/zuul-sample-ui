@@ -1,12 +1,9 @@
 package ir.pt.struct.handler;
 
 import ir.pt.struct.config.Dashboard;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@Slf4j
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
     @Autowired
@@ -37,15 +33,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             SecurityContextHolder.clearContext();
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            ResponseEntity responseEntity = restTemplate.postForEntity(dashboard.getMY_AUTH_LOGOUT_URL(),
-                    createHttpEntity(formData, details), null);
-
-            if (responseEntity.getStatusCode() == HttpStatus.OK ||
-                    responseEntity.getStatusCode() == HttpStatus.FOUND ||
-                    responseEntity.getStatusCode() == HttpStatus.TEMPORARY_REDIRECT) {
-                log.info("####### Success logout {} #### code {}", authentication.getName(), responseEntity.getStatusCode());
-                //
-            }
+            restTemplate.postForEntity(dashboard.getLOGOUT_URL(), createHttpEntity(formData, details), null);
         }
     }
 
