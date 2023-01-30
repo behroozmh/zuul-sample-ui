@@ -1,9 +1,7 @@
 package ir.pt.struct.handler;
 
 import ir.pt.struct.config.Dashboard;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import ir.pt.struct.util.Tools;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -19,13 +17,17 @@ import javax.servlet.http.HttpSession;
 
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
-    @Autowired
     private Dashboard dashboard;
+    private Tools tools;
+
+    public CustomLogoutHandler(Dashboard dashboard, Tools tools) {
+        this.dashboard = dashboard;
+        this.tools = tools;
+    }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null) {
-            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
             HttpSession currentSessionFromRequest = request.getSession(false);
             if (currentSessionFromRequest != null)
                 currentSessionFromRequest.invalidate();
@@ -33,13 +35,8 @@ public class CustomLogoutHandler implements LogoutHandler {
             SecurityContextHolder.clearContext();
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            restTemplate.postForEntity(dashboard.getLOGOUT_URL(), createHttpEntity(formData, details), null);
+            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+            restTemplate.postForEntity(dashboard.getLOGOUT_URL(), tools.createHttpEntity(formData, details), null);
         }
-    }
-
-    private HttpEntity createHttpEntity(Object postModel, OAuth2AuthenticationDetails oauthDetail) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "Bearer " + oauthDetail.getTokenValue());
-        return new HttpEntity(postModel, httpHeaders);
     }
 }
