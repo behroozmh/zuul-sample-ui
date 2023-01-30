@@ -48,6 +48,10 @@ server:
   error:
     whitelabel:
       enabled: false
+
+logging:
+  level:
+    org.springframework.security: DEBUG
 auth:
   portocol: http
   host: 172.17.192.121
