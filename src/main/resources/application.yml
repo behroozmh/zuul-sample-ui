@@ -13,32 +13,32 @@ spring:
 security:
   oauth2:
     client:
-      accessTokenUri: http://172.17.192.121:9999/authentication/oauth/token
-      userAuthorizationUri: http://172.17.192.121:9999/authentication/oauth/authorize
+      accessTokenUri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/token
+      userAuthorizationUri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/authorize
       clientId: admin
       clientSecret: adminSecret
       scope: adminScope
-      grant-type: password
+      grant-type: code
       id: admin
     resource:
-      token-info-uri: http://172.17.192.121:9999/authentication/oauth/check_token
+      token-info-uri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/check_token
 zuul:
   routes:
     user:
       path: /user/**
-      url: http://172.17.192.121:9999/authentication/user
+      url: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/user
     logout:
       path: /logout/**
-      url: http://172.17.192.121:9999/authentication/myLogout
+      url: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/myLogout
     authorize:
       path: /authorize/**
       url: http://172.17.192.121:9998/authorization
     audit:
       path: /audit/**
-      url: http://172.17.192.5:8080/auditing
+      url: http://172.17.192.121:9996/auditing
     resource:
       path: /resource/**
-      url: http://172.17.192.5:8080/adminResource
+      url: http://172.17.192.121:9995/adminResource
   host:
     connect-timeout-millis: 90000000
     socket-timeout-millis: 90000000
@@ -48,3 +48,16 @@ server:
   error:
     whitelabel:
       enabled: false
+logging:
+  level:
+    org.springframework.security: DEBUG
+auth:
+  portocol: http
+  host: 172.17.192.121
+  port: 9999
+  context: authentication
+my:
+  white-list:
+    host: localhost:8081,172.17.192.121:8081,10.128.40.48
+    origin: http://localhost:8081,http://172.17.192.121:8081
+    methods: GET,POST,PUT,OPTION,DELETE
