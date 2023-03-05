@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @PropertySource(value = "classpath:application.yml")
 public class Dashboard {
-
     @Value("${zuul.routes.logout.url}")
     private String LOGOUT_URL;
     @Value("${zuul.routes.authorize.url}")
