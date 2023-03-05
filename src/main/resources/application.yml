@@ -7,9 +7,9 @@ spring:
       max-file-size: 10Mb
       max-request-size: 10Mb
   application:
-    name: adminUI02
+    name: myApp01
   jmx:
-    default-domain: adminUI02
+    default-domain: myApp01.com
 security:
   oauth2:
     client:
@@ -60,4 +60,4 @@ my:
   white-list:
     host: localhost:8081,172.17.192.121:8081,10.128.40.48
     origin: http://localhost:8081,http://172.17.192.121:8081
-    methods: GET,POST,PUT,OPTION,DELETE
+    methods: GET,POST
