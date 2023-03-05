@@ -9,27 +9,27 @@ spring:
   application:
     name: myApp01
   jmx:
-    default-domain: myApp01.com
+    default-domain: myApp01
 security:
   oauth2:
     client:
-      accessTokenUri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/token
-      userAuthorizationUri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/authorize
+      accessTokenUri: ${auth.protocol}://${auth.host}:${auth.port}/${auth.context}/oauth/token
+      userAuthorizationUri: ${auth.protocol}://${auth.host}:${auth.port}/${auth.context}/oauth/authorize
       clientId: admin
       clientSecret: adminSecret
       scope: adminScope
       grant-type: code
       id: admin
     resource:
-      token-info-uri: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/oauth/check_token
+      token-info-uri: ${auth.protocol}://${auth.host}:${auth.port}/${auth.context}/oauth/check_token
 zuul:
   routes:
     user:
       path: /user/**
-      url: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/user
+      url: ${auth.protocol}://${auth.host}:${auth.port}/${auth.context}/user
     logout:
       path: /logout/**
-      url: ${auth.portocol}://${auth.host}:${auth.port}/${auth.context}/myLogout
+      url: ${auth.protocol}://${auth.host}:${auth.port}/${auth.context}/myLogout
     authorize:
       path: /authorize/**
       url: http://172.17.192.121:9998/authorization
@@ -52,7 +52,7 @@ logging:
   level:
     org.springframework.security: DEBUG
 auth:
-  portocol: http
+  protocol: http
   host: 172.17.192.121
   port: 9999
   context: authentication
