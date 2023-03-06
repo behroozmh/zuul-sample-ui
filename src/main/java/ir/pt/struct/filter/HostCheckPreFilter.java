@@ -1,14 +1,11 @@
 package ir.pt.struct.filter;
 
-import com.netflix.zuul.ZuulFilter;
-import com.netflix.zuul.context.RequestContext;
 import ir.pt.struct.config.Dashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -20,8 +17,8 @@ import java.util.Set;
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class HostCheckPreFilter implements Filter {
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-    private Dashboard dashboard;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Dashboard dashboard;
 
     public HostCheckPreFilter(Dashboard dashboard) {
         this.dashboard = dashboard;
@@ -31,10 +28,7 @@ public class HostCheckPreFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        //
-        String origins = dashboard.getCORS_ALLOW_ORIGINS();
         String hosts = dashboard.getALLOW_HOST();
-        ///TODO://BEHI007 remove to other Filter for check referer
         String host = request.getHeader("host");
         String reqReferer = request.getHeader("Referer");
         String reqUrl = request.getRequestURI();

@@ -20,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        MyCsrfTokenRepository myCsrfTokenRepository=new MyCsrfTokenRepository();
         http.headers().cacheControl().disable()
                 .frameOptions().deny()
                 .and()
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().addLogoutHandler(logoutHandler)
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                //.csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository());
+                .csrf().csrfTokenRepository(myCsrfTokenRepository.withHttpOnlyFalse());
+//                .csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository());
     }
 }
