@@ -53,7 +53,7 @@ logging:
     org.springframework.security: DEBUG
 auth:
   protocol: https
-  host: saba.esata.ir
+  host: 172.17.192.121
   port: 7090
   context: authentication
 my:
