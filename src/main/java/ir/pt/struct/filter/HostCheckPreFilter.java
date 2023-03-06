@@ -31,10 +31,7 @@ public class HostCheckPreFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        //
-        String origins = dashboard.getCORS_ALLOW_ORIGINS();
         String hosts = dashboard.getALLOW_HOST();
-        ///TODO://BEHI007 remove to other Filter for check referer
         String host = request.getHeader("host");
         String reqReferer = request.getHeader("Referer");
         String reqUrl = request.getRequestURI();
