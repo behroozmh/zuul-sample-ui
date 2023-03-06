@@ -1,9 +1,6 @@
 package ir.pt.struct.config;
 
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.DefaultCsrfToken;
+import org.springframework.security.web.csrf.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -12,6 +9,7 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -33,6 +31,11 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
     private boolean cookieHttpOnly;
 
     private String cookiePath;
+
+    private static final String DEFAULT_CSRF_TOKEN_ATTR_NAME = HttpSessionCsrfTokenRepository.class
+            .getName().concat(".CSRF_TOKEN");
+
+    private String sessionAttributeName = DEFAULT_CSRF_TOKEN_ATTR_NAME;
 
     public MyCsrfTokenRepository() {
         this.setHttpOnlyMethod = ReflectionUtils.findMethod(Cookie.class, "setHttpOnly", boolean.class);
@@ -60,9 +63,14 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
         }
         if (token == null) {
             cookie.setMaxAge(0);
-        }
-        else {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.removeAttribute(this.sessionAttributeName);
+            }
+        } else {
             cookie.setMaxAge(-1);
+            HttpSession session = request.getSession();
+            session.setAttribute(this.sessionAttributeName, token);
         }
         if (cookieHttpOnly && setHttpOnlyMethod != null) {
             ReflectionUtils.invokeMethod(setHttpOnlyMethod, cookie, Boolean.TRUE);
@@ -81,6 +89,15 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
         if (!StringUtils.hasLength(token)) {
             return null;
         }
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
+
+        CsrfToken seCsrfToken= (CsrfToken) session.getAttribute(this.sessionAttributeName);
+        if(!seCsrfToken.getToken().equals(token))
+            return null;
+
         return new DefaultCsrfToken(this.headerName, this.parameterName, token);
     }
 
@@ -88,7 +105,7 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
      * Sets the name of the HTTP request parameter that should be used to provide a token.
      *
      * @param parameterName the name of the HTTP request parameter that should be used to
-     * provide a token
+     *                      provide a token
      */
     public void setParameterName(String parameterName) {
         Assert.notNull(parameterName, "parameterName is not null");
@@ -99,7 +116,7 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
      * Sets the name of the HTTP header that should be used to provide the token.
      *
      * @param headerName the name of the HTTP header that should be used to provide the
-     * token
+     *                   token
      */
     public void setHeaderName(String headerName) {
         Assert.notNull(headerName, "headerName is not null");
@@ -110,7 +127,7 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
      * Sets the name of the cookie that the expected CSRF token is saved to and read from.
      *
      * @param cookieName the name of the cookie that the expected CSRF token is saved to
-     * and read from
+     *                   and read from
      */
     public void setCookieName(String cookieName) {
         Assert.notNull(cookieName, "cookieName is not null");
