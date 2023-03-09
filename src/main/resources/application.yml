@@ -58,11 +58,11 @@ logging:
     org.springframework.security: DEBUG
 auth:
   protocol: https
-  host: 172.17.192.121
+  host: saba.esata.ir
   port: 7090
   context: authentication
 my:
   white-list:
-    host: localhost:8081,172.17.192.121:8081,10.128.40.48,esakhad.esata.ir
+    host: localhost:8081,172.17.192.121:8081,10.128.40.48
     origin: http://localhost:8081,http://172.17.192.121:8081
     methods: GET,POST
