@@ -12,6 +12,8 @@ spring:
     default-domain: myApp01
   session:
     store-type: redis
+    redis:
+      namespace: myapp
   redis:
     host: 192.168.10.30
     password: 1qaz!QAZ
