@@ -10,6 +10,11 @@ spring:
     name: myApp01
   jmx:
     default-domain: myApp01
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.10.30
+    password: 1qaz!QAZ
 security:
   oauth2:
     client:
